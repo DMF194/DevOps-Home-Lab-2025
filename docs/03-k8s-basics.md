@@ -65,6 +65,37 @@ kubectl get nodes
 kubectl get nodes -o wide
 # Should show 3 nodes: 1 server, 2 agents, all "Ready"
 ```
+Note: When using Win11, you need to use the following commands
+
+```bash
+# The kubectl config current-context command is used to display the name of the context that kubectl is currently using to interact with a Kubernetes cluster
+
+kubectl config current-context
+
+# The command kubectl config view --minify | findstr server on a Windows system with PowerShell or Command Prompt will display the API server address for your current Kubernetes context by filtering the output of kubectl config view --minify
+
+kubectl config view --minify | findstr server
+
+Output 
+server: https://your-cluster-api-server-url:port
+
+# If you get the following response when curl to the server url, that means you need to set the kube config to point to server url
+
+$ curl -k https://localhost:56330
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {},
+  "metadata": {},
+  "status": "Failure",
+  "message": "Unauthorized",
+  "reason": "Unauthorized",
+  "code": 401
+}
+
+Replace name-cluster with output from "kubectl config current-context" and port number with output from "kubectl config view --minify | findstr server" last number is port number
+$ kubectl config set-cluster ${name-cluster} --server=${https://127.0.0.1:port-number}
+```
 
 **Expected Output:**
 ```bash
@@ -244,7 +275,26 @@ kubectl wait --for=condition=ready pod -l app=frontend -n humor-game --timeout=1
 # Verify all pods are running
 kubectl get pods -n humor-game
 ```
+Note: If running the kubectl commands from above you get the following
+```bash
+k3d image import humor-game-backend:latest -c dev-cluster
+FATA[0000] failed to get cluster dev-cluster: No nodes found for given cluster
+```
+If means that the cluster is incorrect when using the k3d-config.yaml to construct the k3d cluster 
 
+k3d-config.yaml
+```bash
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: humor-game-cluster
+```
+
+To resolve this, use the following command
+
+```k3d image import humor-game-backend:latest -c humor-game-cluster
+k3d image import humor-game-backend:latest -c humor-game-cluster
+```
 **Expected Output:**
 ```bash
 NAME                                    READY   STATUS    RESTARTS   AGE
