@@ -117,7 +117,7 @@ Select "Run as administrator"
 
 Run this command:
 
-bashecho "127.0.0.1 gameapp.local" >> /c/Windows/System32/drivers/etc/hosts
+echo "127.0.0.1 gameapp.local" >> /c/Windows/System32/drivers/etc/hosts
 
 **Expected Output:**
 ```bash
