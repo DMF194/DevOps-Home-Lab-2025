@@ -106,6 +106,18 @@ humor-game-ingress   nginx   gameapp.local   172.18.0.3   80      2m
 # Add local domain to your hosts file
 echo "127.0.0.1 gameapp.local" | sudo tee -a /etc/hosts
 ```
+In Git Bash on Windows 11, you'll need to modify this command since Windows doesn't use sudo or /etc/hosts. Here's how to do it:
+Method 1: Using Git Bash with Administrator Privileges
+
+Open Git Bash as Administrator:
+
+Right-click on Git Bash
+Select "Run as administrator"
+
+
+Run this command:
+
+bashecho "127.0.0.1 gameapp.local" >> /c/Windows/System32/drivers/etc/hosts
 
 **Expected Output:**
 ```bash
@@ -151,7 +163,8 @@ Accept-Ranges: bytes
 When doing in Wins11, terminal Gitbash
 Note unable to get above expected output
 
-```bash$ kubectl get pods -n ingress-nginx
+```bash$ 
+kubectl get pods -n ingress-nginx
 NAME                                       READY   STATUS      RESTARTS   AGE
 ingress-nginx-admission-create-pqvlh       0/1     Completed   0          51m
 ingress-nginx-admission-patch-8bqbh        0/1     Completed   0          51m
